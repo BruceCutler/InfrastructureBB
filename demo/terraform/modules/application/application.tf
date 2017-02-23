@@ -32,111 +32,48 @@ data "terraform_remote_state" "networking" {
   }
 }
 
-# IAM Role for EC2 instances
-resource "aws_iam_role" "ec2_role" {
-  name = "ec2_role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+module "iam" "web_server_iam" {
+  source = "./iam"
+  region = "${var.region}"
+  target = "${var.target}"
 }
 
-# IAM Role Policy
-resource "aws_iam_role_policy" "ec2_role_policy" {
-    name = "ec2_role_policy"
-    role = "${aws_iam_role.ec2_role.id}"
-    policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:*"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_instance_profile" "ec2_profile" {
-    name = "ec2_profile"
-    roles = ["${aws_iam_role.ec2_role.name}"]
-}
-
-# Security Groups For EC2 instances
-resource "aws_security_group" "ec2_instances" {
-  name = "${var.target}-${var.stack}-sg"
+module "security" {
+  source = "./security"
+  region = "${var.region}"
+  target = "${var.target}"
+  stack  = "${var.stack}"
   vpc_id = "${data.terraform_remote_state.networking.vpc_id}"
-
-  ingress = {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress = {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress = {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress = {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Name = "${var.target}-${var.stack}-sg"
-  }
 }
 
-# Launch Config for Web Servers
-resource "aws_launch_configuration" "web_server" {
-  name = "${var.target}-${var.stack}-web-lc"
-  image_id = "${var.web_server_ami}"
-  instance_type = "${var.web_server_instance_type}"
-  iam_instance_profile   = "${aws_iam_instance_profile.ec2_profile.id}"
+module "elb" "web_server_elb" {
+  source = "./elb"
+  region = "${var.region}"
+  target = "${var.target}"
+  stack  = "${var.stack}"
+  vpc_id = "${data.terraform_remote_state.networking.vpc_id}"
+  elb_subnets = "${data.terraform_remote_state.networking.pub_sub_id}"
+}
+
+module "asg" "web_server_asg" {
+  source = "./asg"
+  region = "${var.region}"
+  target = "${var.target}"
+  stack  = "${var.stack}"
+  web_server_ami = "${var.web_server_ami}"
+  web_server_instance_type = "${var.web_server_instance_type}"
   key_name = "${var.key_name}"
-  security_groups = ["${aws_security_group.ec2_instances.id}"]
-  associate_public_ip_address = "true"
+  security_groups = "${module.security.ec2_instance_sg}"
+  vpc_zone_identifier = "${data.terraform_remote_state.networking.pub_sub_id}"
+  iam_instance_profile = "${module.iam.ec2_iam_profile}"
+  elb_id = "${module.elb.web_elb_id}"
 }
 
-# ASG for Web Servers
-resource "aws_autoscaling_group" "web_servers" {
-  name                  = "${var.target}-${var.stack}-web-asg"
-  max_size              = 2
-  min_size              = 2
-  launch_configuration  = "${aws_launch_configuration.web_server.id}"
-  vpc_zone_identifier   = ["${data.terraform_remote_state.networking.pub_sub_id}"]
 
-  tag {
-    key                 = "Name"
-    value               = "${var.target}-${var.stack}-web"
-    propagate_at_launch = true
-  }
-}
+
+
+
+
+
+
+
