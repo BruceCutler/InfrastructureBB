@@ -6,6 +6,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "azs" {}
+
 variable "vpc_cidr_block" {}
 
 variable "pub_sub_cidr" {}
@@ -24,6 +26,7 @@ module "network" {
   cidr_block      = "${var.vpc_cidr_block}"
   pub_sub_cidr    = "${var.pub_sub_cidr}"
   priv_sub_cidr   = "${var.priv_sub_cidr}"
+  azs             = "${var.azs}"
 }
 
 output "vpc_id" {

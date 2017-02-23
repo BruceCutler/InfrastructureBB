@@ -10,6 +10,8 @@ variable "pub_sub_cidr" {}
 
 variable "priv_sub_cidr" {}
 
+variable "azs" {}
+
 provider "aws" {
   region = "${var.region}"
 }
@@ -29,6 +31,7 @@ module "public_subnet" {
   stack          = "${var.stack}"
   pub_sub_cidr   = "${var.pub_sub_cidr}"
   vpc_id         = "${module.vpc.vpc_id}"
+  azs            = "${var.azs}"
 }
 
 module "private_subnet" {
@@ -39,7 +42,8 @@ module "private_subnet" {
   priv_sub_cidr   = "${var.priv_sub_cidr}"
   vpc_id          = "${module.vpc.vpc_id}"
   igw_id          = "${module.public_subnet.igw_id}"
-  pub_subnet_id  = "${module.public_subnet.pub_sub_id}"
+  pub_subnet_ids  = "${module.public_subnet.pub_sub_ids}"
+  azs             = "${var.azs}"
 }
 
 output "vpc_id" {
@@ -47,7 +51,7 @@ output "vpc_id" {
 }
 
 output "pub_sub_id" {
-  value = "${module.public_subnet.pub_sub_id}"
+  value = "${module.public_subnet.pub_sub_ids}"
 }
 
 output "igw_id" {

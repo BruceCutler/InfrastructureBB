@@ -73,6 +73,7 @@ geo="$geo"
 target="$target"
 stack="$stack"
 region="$region"
+bucket="$bucket"
 EOF
 
 echo
