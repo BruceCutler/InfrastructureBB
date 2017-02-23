@@ -10,8 +10,6 @@ provider "aws" {
   region = "${var.region}"
 }
 
-
-
 # Security Groups For EC2 instances
 resource "aws_security_group" "ec2_instances" {
   name = "${var.target}-${var.stack}-sg"
