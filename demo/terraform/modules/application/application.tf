@@ -133,7 +133,6 @@ resource "aws_autoscaling_group" "web_servers" {
   min_size              = 2
   launch_configuration  = "${aws_launch_configuration.web_server.id}"
   vpc_zone_identifier   = ["${data.terraform_remote_state.networking.pub_sub_id}"]
-  availability_zones    = ["${var.azs}"]
 
   tag {
     key                 = "Name"
