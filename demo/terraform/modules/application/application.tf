@@ -68,12 +68,3 @@ module "asg" "web_server_asg" {
   iam_instance_profile = "${module.iam.ec2_iam_profile}"
   elb_id = "${module.elb.web_elb_id}"
 }
-
-
-
-
-
-
-
-
-

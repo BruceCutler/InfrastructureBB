@@ -22,10 +22,6 @@ provider "aws" {
   region = "${var.region}"
 }
 
-data "template_file" "userdata" {
-  template = "${file("${path.module}/templates/user_data.tpl")}"
-}
-
 # Launch Config for Web Servers
 resource "aws_launch_configuration" "web_server" {
   name                          = "${var.target}-${var.stack}-web-lc"
@@ -35,7 +31,6 @@ resource "aws_launch_configuration" "web_server" {
   key_name                      = "${var.key_name}"
   security_groups               = ["${var.security_groups}"]
   associate_public_ip_address   = "true"
-  user_data                     = "${data.template_file.userdata.rendered}"
 }
 
 # ASG for Web Servers
