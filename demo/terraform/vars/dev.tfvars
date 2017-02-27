@@ -10,4 +10,4 @@ allow_rds_minor_upgrades  = "true"
 
 # Web Layer Vars
 web_server_count          = "2"
-web_server_instance_type  = "t2.micro"
+web_server_instance_type  = "t2.large"
