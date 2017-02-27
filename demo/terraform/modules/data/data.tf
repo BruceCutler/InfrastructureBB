@@ -8,6 +8,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "db_size" {}
 
 variable "db_engine" {}
@@ -44,6 +46,7 @@ module "rds" {
   region               = "${var.region}"
   target               = "${var.target}"
   stack                = "${var.stack}"
+  sub_stack            = "${var.sub_stack}"
   allocated_storage    = "${var.db_size}"
   engine               = "${var.db_engine}"
   instance_class       = "${var.db_instance_class}"

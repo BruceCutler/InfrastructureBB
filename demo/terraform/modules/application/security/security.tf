@@ -4,6 +4,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "vpc_id" {}
 
 provider "aws" {
@@ -12,7 +14,7 @@ provider "aws" {
 
 # Security Groups For EC2 instances
 resource "aws_security_group" "ec2_instances" {
-  name = "${var.target}-${var.stack}-sg"
+  name = "${var.target}-${var.stack}${var.sub_stack}-sg"
   vpc_id = "${var.vpc_id}"
 
   ingress = {
@@ -44,7 +46,7 @@ resource "aws_security_group" "ec2_instances" {
   }
 
   tags {
-    Name = "${var.target}-${var.stack}-sg"
+    Name = "${var.target}-${var.stack}${var.sub_stack}-sg"
   }
 }
 

@@ -7,7 +7,7 @@ stack=$STACK
 target=$TARGET
 action=$ACT
 
-while getopts ':g:t:s:a:' opt; do
+while getopts ':g:t:s:n:a:' opt; do
   case $opt in
     g)
       geo="$OPTARG"
@@ -17,6 +17,9 @@ while getopts ':g:t:s:a:' opt; do
       ;;
     s)
       stack="$OPTARG"
+      ;;
+    n)
+      sub_stack="$OPTARG"
       ;;
     a)
       ACTION="$OPTARG"
@@ -34,9 +37,11 @@ case $geo in
     ;;
 esac
 
+[[ -n $sub_stack ]] && sub_stack=-$sub_stack
+
 # Set up variables for Terraform remote config
 bucket="slalom-$geo"
-BUCKET_KEY="state/$target-$stack.tfstate"
+BUCKET_KEY="state/$target-$stack$sub_stack.tfstate"
 
 # Check to make sure the stack exists
 if [[ ! -d $SOURCE_DIR/stacks/$stack ]]; then
@@ -58,7 +63,7 @@ for var_file in "default" "$stack" "$target" "$geo/default" "$geo/$stack" "$geo/
 done
 
 # Set up TMP dir to run Terraform commands in
-TMP_DIR=$SOURCE_DIR/../tmp/$target-$geo-$stack-$(date "+%Y-%m-%d-%H%M%S")
+TMP_DIR=$SOURCE_DIR/../tmp/$target-$geo-$stack$sub_stack-$(date "+%Y-%m-%d-%H%M%S")
 mkdir -p $TMP_DIR
 
 # Initialize terraform backend
@@ -72,6 +77,7 @@ cat > $TMP_DIR/vars/inputVars.tfvars << EOF
 geo="$geo"
 target="$target"
 stack="$stack"
+sub_stack="$sub_stack"
 region="$region"
 bucket="$bucket"
 EOF

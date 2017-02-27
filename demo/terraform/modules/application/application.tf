@@ -10,6 +10,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "web_server_count" {}
 
 variable "web_server_ami" {}
@@ -36,6 +38,7 @@ module "iam" "web_server_iam" {
   source = "./iam"
   region = "${var.region}"
   target = "${var.target}"
+  sub_stack = "${var.sub_stack}"
 }
 
 module "security" {
@@ -43,6 +46,7 @@ module "security" {
   region = "${var.region}"
   target = "${var.target}"
   stack  = "${var.stack}"
+  sub_stack = "${var.sub_stack}"
   vpc_id = "${data.terraform_remote_state.networking.vpc_id}"
 }
 
@@ -51,6 +55,7 @@ module "elb" "web_server_elb" {
   region = "${var.region}"
   target = "${var.target}"
   stack  = "${var.stack}"
+  sub_stack = "${var.sub_stack}"
   vpc_id = "${data.terraform_remote_state.networking.vpc_id}"
   elb_subnets = "${data.terraform_remote_state.networking.pub_sub_id}"
 }
@@ -60,6 +65,7 @@ module "asg" "web_server_asg" {
   region = "${var.region}"
   target = "${var.target}"
   stack  = "${var.stack}"
+  sub_stack = "${var.sub_stack}"
   web_server_ami = "${var.web_server_ami}"
   web_server_instance_type = "${var.web_server_instance_type}"
   key_name = "${var.key_name}"
