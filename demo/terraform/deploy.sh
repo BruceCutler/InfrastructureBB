@@ -1,4 +1,6 @@
 #!/bin/bash
+# Example: ./deploy.sh us dev slalom1
+
 
 geo=$1
 target=$2

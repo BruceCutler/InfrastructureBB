@@ -68,7 +68,7 @@ resource "aws_db_instance" "rds_instance" {
   name                        = "${var.name}"
   username                    = "${var.username}"
   password                    = "${var.password}"
-  multi_az                    = "true"
+  multi_az                    = "false"
   db_subnet_group_name        = "${aws_db_subnet_group.rds.id}"
   auto_minor_version_upgrade  = "${var.allow_minor_upgrades}"
 }
