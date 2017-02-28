@@ -1,7 +1,7 @@
 # Data Stack Vars
 db_size                   = 10
 db_engine                 = "mysql"
-db_instance_class         = "db.t1.micro"
+db_instance_class         = "db.t2.micro"
 db_name                   = "dev_db"
 db_user                   = "dev_db_user"
 db_password               = "dev_db_pass"
