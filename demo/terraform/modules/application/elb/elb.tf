@@ -4,6 +4,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "vpc_id" {}
 
 variable "elb_subnets" {}
@@ -13,7 +15,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "elb_security_group" {
-  name = "${var.target}-${var.stack}-elb-sg"
+  name = "${var.target}-${var.stack}${var.sub_stack}-elb-sg"
   vpc_id = "${var.vpc_id}"
 
   ingress = {
@@ -31,12 +33,12 @@ resource "aws_security_group" "elb_security_group" {
   }
 
   tags {
-    Name = "${var.target}-${var.stack}-sg"
+    Name = "${var.target}-${var.stack}${var.sub_stack}-sg"
   }
 }
 
 resource "aws_elb" "web_elb" {
-  name = "${var.target}-${var.stack}-web-elb"
+  name = "${var.target}-${var.stack}${var.sub_stack}-web-elb"
   cross_zone_load_balancing = "true"
   internal = "false"
   subnets = ["${split(",",var.elb_subnets)}"]
@@ -51,10 +53,11 @@ resource "aws_elb" "web_elb" {
   }
 
   tags {
-    Name        = "${var.target}-${var.stack}-elb"
+    Name        = "${var.target}-${var.stack}${var.sub_stack}-elb"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
+    SubStack    = "${var.sub_stack}"
   }
 }
 

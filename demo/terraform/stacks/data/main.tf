@@ -8,6 +8,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "db_size" {}
 
 variable "db_engine" {}
@@ -35,6 +37,7 @@ module "data" {
   geo                       = "${var.geo}"
   target                    = "${var.target}"
   stack                     = "${var.stack}"
+  sub_stack                 = "${var.sub_stack}"
   db_size                   = "${var.db_size}"
   db_engine                 = "${var.db_engine}"
   db_instance_class         = "${var.db_instance_class}"

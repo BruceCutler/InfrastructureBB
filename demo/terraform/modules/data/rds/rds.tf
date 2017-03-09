@@ -6,6 +6,8 @@ variable "target" {}
 
 variable "stack" {}
 
+variable "sub_stack" {}
+
 variable "allocated_storage" {}
 
 variable "engine" {}
@@ -31,39 +33,42 @@ provider "aws" {
 }
 
 resource "aws_db_subnet_group" "rds" {
-  name        = "${var.target}-${var.stack}-subnet-group"
-  description = "RDS subnet group for ${var.target}-${var.stack}"
+  name        = "${var.target}-${var.stack}${var.sub_stack}-subnet-group"
+  description = "RDS subnet group for ${var.target}-${var.stack}${var.sub_stack}"
   subnet_ids  = ["${split(",", var.priv_subnet_ids)}"]
 
   tags {
-    Name        = "${var.target}-${var.stack}-subnet-group"
+    Name        = "${var.target}-${var.stack}${var.sub_stack}-subnet-group"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
+    SubStack    = "${var.sub_stack}"
   }
 }
 
 resource "aws_security_group" "rds_security_group" {
-  name        = "${var.target}-${var.stack}-rds-sg"
+  name        = "${var.target}-${var.stack}${var.sub_stack}-rds-sg"
   description = "SG for RDS access"
   vpc_id      = "${var.vpc_id}"
 
   tags {
-    Name        = "${var.target}-${var.stack}-rds-sg"
+    Name        = "${var.target}-${var.stack}${var.sub_stack}-rds-sg"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
+    SubStack    = "${var.sub_stack}"
   }
 }
 
 resource "aws_db_instance" "rds_instance" {
-  identifier                  = "${var.target}-${var.stack}-rds"
+  identifier                  = "${var.target}-${var.stack}${var.sub_stack}-rds"
   allocated_storage           = "${var.allocated_storage}"
   engine                      = "${var.engine}"
   instance_class              = "${var.instance_class}"
   name                        = "${var.name}"
   username                    = "${var.username}"
   password                    = "${var.password}"
+  multi_az                    = "false"
   db_subnet_group_name        = "${aws_db_subnet_group.rds.id}"
   auto_minor_version_upgrade  = "${var.allow_minor_upgrades}"
 }
