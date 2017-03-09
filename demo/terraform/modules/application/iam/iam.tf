@@ -49,7 +49,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-    name = "${var.target}_ec2_profile"
+    name = "${var.target}${var.sub_stack}_ec2_profile"
     roles = ["${aws_iam_role.ec2_role.name}"]
 }
 

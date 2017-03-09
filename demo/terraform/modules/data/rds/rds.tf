@@ -47,7 +47,7 @@ resource "aws_db_subnet_group" "rds" {
 }
 
 resource "aws_security_group" "rds_security_group" {
-  name        = "${var.target}-${var.stack}-rds-sg"
+  name        = "${var.target}-${var.stack}${var.sub_stack}-rds-sg"
   description = "SG for RDS access"
   vpc_id      = "${var.vpc_id}"
 
