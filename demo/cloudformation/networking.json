@@ -1,0 +1,43 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Networking Stack",
+
+  "Metadata" : {
+  },
+
+  "Parameters" : {
+    "CIDRBlock" : {
+      "Type" : "String"
+    },
+    "KeyPairName" : {
+      "Type" : "String"
+    },
+    "PubSubCIDR" : {
+      "Type" : "String"
+    },
+    "PrivSubCIDR" : {
+      "Type" : "String"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Conditions" : {
+  },
+
+  "Resources" : {
+    "AWSVpc" : {
+      "Type" : "AWS::EC2::VPC",
+      "Properties" : {
+        "CidrBlock" : { "Ref" : "CIDRBlock" },
+        "EnableDnsHostnames" : "true",
+        "Tags" : [ {"Key" : "Name", "Value" : "TestVPC"} ]
+      }
+    }
+  },
+
+  "Outputs" : {
+  }
+}
