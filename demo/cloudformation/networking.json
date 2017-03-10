@@ -13,17 +13,23 @@
     "Stack" : {
       "Type" : "String"
     },
-    "CIDRBlock" : {
+    "VPCCIDRBlock" : {
       "Type" : "String"
     },
     "KeyPairName" : {
       "Type" : "String"
     },
-    "PubSubCIDR" : {
-      "Type" : "CommaDelimitedList"
+    "PubSubCIDR1" : {
+      "Type" : "String"
     },
-    "PrivSubCIDR" : {
-      "Type" : "CommaDelimitedList"
+    "PubSubCIDR2" : {
+      "Type" : "String"
+    },
+    "PrivSubCIDR1" : {
+      "Type" : "String"
+    },
+    "PrivSubCIDR2" : {
+      "Type" : "String"
     }
   },
 
@@ -34,12 +40,71 @@
   },
 
   "Resources" : {
-    "AWSVpc" : {
+    "VPC" : {
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
-        "CidrBlock" : { "Ref" : "CIDRBlock" },
+        "CidrBlock" : { "Ref" : "VPCCIDRBlock" },
         "EnableDnsHostnames" : "true",
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" } ]]}} ]
+      }
+    },
+    "PubSubnet1" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : { "Ref" : "PubSubCIDR1" },
+        "MapPublicIpOnLaunch" : "true",
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pub1" ]]}} ],
+        "VpcId" : { "Ref" : "VPC" }
+      }
+    },
+    "PubSubnet2" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : { "Ref" : "PubSubCIDR2" },
+        "MapPublicIpOnLaunch" : "true",
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pub2" ]]}} ],
+        "VpcId" : { "Ref" : "VPC" }
+      }
+    },
+    "IGW" : {
+      "Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "igw" ]]}} ]
+      }
+    },
+    "IGWAttachment" : {
+      "Type" : "AWS::EC2::VPCGatewayAttachment",
+      "Properties" : {
+        "InternetGatewayId" : { "Ref" : "IGW" },
+        "VpcId" : { "Ref" : "VPC" }
+      }
+    },
+    "PubRouteTable1" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "rtb1" ]]}} ]
+      }
+    },
+    "PubRouteTable2" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "rtb2" ]]}} ]
+      }
+    },
+    "PubRtbAssoc1" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "PubRouteTable1" },
+        "SubnetId" : { "Ref" : "PubSubnet1" }
+      }
+    },
+    "PubRtbAssoc2" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "PubRouteTable2" },
+        "SubnetId" : { "Ref" : "PubSubnet2" }
       }
     }
   },

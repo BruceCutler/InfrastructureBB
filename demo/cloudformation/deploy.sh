@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# ! -lt 2 ]; then
+if [[ $# -ne 2 ]]; then
   echo "You need to supply arguments for target and stack"
   exit 1
 fi
