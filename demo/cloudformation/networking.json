@@ -106,6 +106,52 @@
         "RouteTableId" : { "Ref" : "PubRouteTable2" },
         "SubnetId" : { "Ref" : "PubSubnet2" }
       }
+    },
+    "IGWRoutePub1" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : { "Ref" : "IGW" },
+        "RouteTableId" : { "Ref" : "PubRouteTable1" }
+      }
+    },
+    "IGWRoutePub2" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : { "Ref" : "IGW" },
+        "RouteTableId" : { "Ref" : "PubRouteTable2" }
+      }
+    },
+    "PrivSubnet1" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : { "Ref" : "PrivSubCIDR1" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "priv1" ]]}} ],
+        "VpcId" : { "Ref" : "VPC" }
+      }
+    },
+    "PrivSubnet2" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : { "Ref" : "PrivSubCIDR2" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "priv2" ]]}} ],
+        "VpcId" : { "Ref" : "VPC" }
+      }
+    },
+    "NATGatewayEIP" : {
+      "Type" : "AWS::EC2::EIP",
+      "Properties" : {
+        "Domain" : "vpc"
+      },
+      "DependsOn" : "IGWAttachment"
+    },
+    "NATGateway" : {
+      "Type" : "AWS::EC2::NatGateway",
+      "Properties" : {
+        "AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"] },
+        "SubnetId" : { "Ref" : "PubSubnet1" }
+      }
     }
   },
 

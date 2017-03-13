@@ -25,10 +25,10 @@
   },
   {
     "ParameterKey": "PrivSubCIDR1",
-    "ParameterValue": "10.205.16.0/24"
+    "ParameterValue": "10.205.32.0/24"
   },
   {
     "ParameterKey": "PrivSubCIDR2",
-    "ParameterValue": "10.205.17.0/24"
+    "ParameterValue": "10.205.33.0/24"
   }
 ]
