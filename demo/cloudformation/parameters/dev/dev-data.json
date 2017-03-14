@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "Target",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "Stack",
+    "ParameterValue": "networking"
+  },
+  {
+    "ParameterKey": "KeyPairName",
+    "ParameterValue": "development"
+  }
+]

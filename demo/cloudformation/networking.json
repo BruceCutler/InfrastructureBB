@@ -16,9 +16,6 @@
     "VPCCIDRBlock" : {
       "Type" : "String"
     },
-    "KeyPairName" : {
-      "Type" : "String"
-    },
     "PubSubCIDR1" : {
       "Type" : "String"
     },
@@ -83,14 +80,14 @@
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "rtb1" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pubrtb1" ]]}} ]
       }
     },
     "PubRouteTable2" : {
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "rtb2" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pubrtb2" ]]}} ]
       }
     },
     "PubRtbAssoc1" : {
@@ -152,9 +149,93 @@
         "AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"] },
         "SubnetId" : { "Ref" : "PubSubnet1" }
       }
+    },
+    "PrivRouteTable1" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "privrtb1" ]]}} ]
+      }
+    },
+    "PrivRouteTable2" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "privrtb2" ]]}} ]
+      }
+    },
+    "PrivRtbAssoc1" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "PrivRouteTable1" },
+        "SubnetId" : { "Ref" : "PrivSubnet1" }
+      }
+    },
+    "PrivRtbAssoc2" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "PrivRouteTable2" },
+        "SubnetId" : { "Ref" : "PrivSubnet2" }
+      }
+    },
+    "NATRoutePriv1" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "NatGatewayId" : { "Ref" : "NATGateway" },
+        "RouteTableId" : { "Ref" : "PrivRouteTable1" }
+      }
+    },
+    "NATRoutePriv2" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "NatGatewayId" : { "Ref" : "NATGateway" },
+        "RouteTableId" : { "Ref" : "PrivRouteTable2" }
+      }
     }
   },
 
   "Outputs" : {
+    "VPCId" : {
+      "Description" : "VPC ID",
+      "Value" : { "Ref" : "VPC" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID"}}
+    },
+    "PubSubnet1" : {
+      "Description" : "Public Subnet 1",
+      "Value" : { "Ref" : "PubSubnet1" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PubSubnet1"}}
+    },
+    "PubSubnet2" : {
+      "Description" : "Public Subnet 2",
+      "Value" : { "Ref" : "PubSubnet2" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PubSubnet2"}}
+    },
+    "PrivSubnet1" : {
+      "Description" : "Private Subnet 1",
+      "Value" : { "Ref" : "PrivSubnet1" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivSubnet1"}}
+    },
+    "PrivSubnet2" : {
+      "Description" : "Private Subnet 2",
+      "Value" : { "Ref" : "PrivSubnet2" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivSubnet2"}}
+    }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
