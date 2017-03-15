@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "Networking Stack",
+  "Description" : "Data Stack",
 
   "Metadata" : {
   },
@@ -13,19 +13,28 @@
     "Stack" : {
       "Type" : "String"
     },
-    "VPCCIDRBlock" : {
+    "NetworkingStackName" : {
       "Type" : "String"
     },
-    "PubSubCIDR1" : {
+    "DBSize" : {
       "Type" : "String"
     },
-    "PubSubCIDR2" : {
+    "DBEngine" : {
       "Type" : "String"
     },
-    "PrivSubCIDR1" : {
+    "DBInstanceClass" : {
       "Type" : "String"
     },
-    "PrivSubCIDR2" : {
+    "DBName" : {
+      "Type" : "String"
+    },
+    "DBUser" : {
+      "Type" : "String"
+    },
+    "DBPass" : {
+      "Type" : "String"
+    },
+    "DBStorageType" : {
       "Type" : "String"
     }
   },
@@ -37,21 +46,37 @@
   },
 
   "Resources" : {
-    "VPC" : {
-      "Type" : "AWS::EC2::VPC",
+    "DBSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
       "Properties" : {
-        "CidrBlock" : { "Ref" : "VPCCIDRBlock" },
-        "EnableDnsHostnames" : "true",
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" } ]]}} ]
+        "DBSubnetGroupDescription" : "Subnet group used for RDS",
+        "SubnetIds" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet2"} }],
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSubnetGroup" ]]}} ]
       }
     },
-    "PubSubnet1" : {
-      "Type" : "AWS::EC2::Subnet",
+    "DBSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "CidrBlock" : { "Ref" : "PubSubCIDR1" },
-        "MapPublicIpOnLaunch" : "true",
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pub1" ]]}} ],
-        "VpcId" : { "Ref" : "VPC" }
+        "GroupDescription" : "VPC Security group used for RDS",
+        "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSG" ]]}} ]
+      }
+    },
+    "RDSInstance" : {
+      "Type" : "AWS::RDS::DBInstance",
+      "Properties" : {
+        "DBInstanceIdentifier" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]},
+        "AllocatedStorage" : { "Ref" : "DBSize" },
+        "Engine" : { "Ref" : "DBEngine" },
+        "DBInstanceClass" : { "Ref" : "DBInstanceClass" },
+        "DBName" : { "Ref" : "DBName" },
+        "MasterUsername" : { "Ref" : "DBUser" },
+        "MasterUserPassword" : { "Ref" : "DBPass" },
+        "MultiAZ" : "false",
+        "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" },
+        "AutoMinorVersionUpgrade" : "true",
+        "VPCSecurityGroups" : [ { "Ref" : "DBSecurityGroup" } ],
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]}} ]
       }
     }
   },

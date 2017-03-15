@@ -48,6 +48,10 @@
     "PubSubnet1" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
+        "AvailabilityZone" : {
+          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
+
+        },
         "CidrBlock" : { "Ref" : "PubSubCIDR1" },
         "MapPublicIpOnLaunch" : "true",
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pub1" ]]}} ],
@@ -57,6 +61,10 @@
     "PubSubnet2" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
+        "AvailabilityZone" : {
+          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
+
+        },
         "CidrBlock" : { "Ref" : "PubSubCIDR2" },
         "MapPublicIpOnLaunch" : "true",
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pub2" ]]}} ],
@@ -123,6 +131,10 @@
     "PrivSubnet1" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
+        "AvailabilityZone" : {
+          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
+
+        },
         "CidrBlock" : { "Ref" : "PrivSubCIDR1" },
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "priv1" ]]}} ],
         "VpcId" : { "Ref" : "VPC" }
@@ -131,6 +143,10 @@
     "PrivSubnet2" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
+        "AvailabilityZone" : {
+          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
+
+        },
         "CidrBlock" : { "Ref" : "PrivSubCIDR2" },
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "priv2" ]]}} ],
         "VpcId" : { "Ref" : "VPC" }

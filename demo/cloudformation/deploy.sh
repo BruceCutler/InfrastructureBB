@@ -18,5 +18,3 @@ aws cloudformation create-stack \
  --stack-name $stackName \
  --template-body file://$stack.json \
  --parameters file://parameters/$target/$target-$stack.json
-
-# Add in wait statements etc.
