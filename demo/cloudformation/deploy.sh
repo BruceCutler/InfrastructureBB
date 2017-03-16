@@ -10,6 +10,10 @@ fi
 target=$1
 stack=$2
 
+if [[ $stack == "web" ]]; then
+  capabilities='--capabilities CAPABILITY_NAMED_IAM'
+fi
+
 # Need uppercase first letter for stack name
 upperTarget="$(tr '[:lower:]' '[:upper:]' <<< ${target:0:1})${target:1}"
 stackName="${upperTarget}-$stack"
@@ -17,4 +21,4 @@ stackName="${upperTarget}-$stack"
 aws cloudformation create-stack \
  --stack-name $stackName \
  --template-body file://$stack.json \
- --parameters file://parameters/$target/$target-$stack.json
+ --parameters file://parameters/$target/$target-$stack.json $capabilities

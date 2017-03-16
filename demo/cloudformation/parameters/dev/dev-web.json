@@ -1,0 +1,22 @@
+[
+  {
+    "ParameterKey": "Target",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "Stack",
+    "ParameterValue": "web"
+  },
+  {
+    "ParameterKey": "NetworkingStackName",
+    "ParameterValue": "Dev-networking"
+  },
+  {
+    "ParameterKey": "WebServerCount",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "WebServerInstanceType",
+    "ParameterValue": "t2.micro"
+  }
+]

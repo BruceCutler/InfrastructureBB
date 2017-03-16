@@ -1,0 +1,122 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Web Stack",
+
+  "Metadata" : {
+  },
+
+  "Parameters" : {
+    "Target" : {
+      "Type" : "String"
+    },
+    "Stack" : {
+      "Type" : "String"
+    },
+    "NetworkingStackName" : {
+      "Type" : "String"
+    },
+    "WebServerCount" : {
+      "Type" : "String"
+    },
+    "WebServerInstanceType" : {
+      "Type" : "String"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Conditions" : {
+  },
+
+  "Resources" : {
+    "IAMRole" : {
+      "Type" : "AWS::IAM::Role",
+      "Properties" : {
+        "RoleName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webrole" ]]},
+        "AssumeRolePolicyDocument" : {
+          "Version" : "2012-10-17",
+          "Statement" : [
+            {
+              "Action" : "sts:AssumeRole",
+              "Principal" : {
+                "Service" : "ec2.amazonaws.com"
+              },
+              "Effect" : "Allow",
+              "Sid" : ""
+            }
+          ]
+        }
+      }
+    },
+
+    "IAMPolicy" : {
+      "Type" : "AWS::IAM::Policy",
+      "Properties" : {
+        "PolicyName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webpolicy" ]]},
+        "Roles" : [{ "Ref" : "IAMRole" }],
+        "PolicyDocument" : {
+          "Version" : "2012-10-17",
+          "Statement" : [
+            {
+              "Action" : [
+                "s3:*"
+              ],
+              "Effect" : "Allow",
+              "Resource" : "*"
+            }
+          ]
+        }
+      }
+    },
+
+    "WebSG" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Security group for web servers",
+        "SecurityGroupIngress" : [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "22",
+            "ToPort" : "22",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "443",
+            "ToPort" : "443",
+            "CidrIp" : "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupEgress" : [
+          {
+            "IpProtocol" : "-1",
+            "FromPort" : "0",
+            "ToPort" : "0",
+            "CidrIp" : "0.0.0.0/0"
+          }
+        ],
+        "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "WebSG" ]]}} ]
+      }
+    }
+
+  },
+
+  "Outputs" : {
+  }
+}
+
+
+
+
+
+
+

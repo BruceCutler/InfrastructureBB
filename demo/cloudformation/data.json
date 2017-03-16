@@ -54,6 +54,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSubnetGroup" ]]}} ]
       }
     },
+
     "DBSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
@@ -62,6 +63,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSG" ]]}} ]
       }
     },
+    
     "RDSInstance" : {
       "Type" : "AWS::RDS::DBInstance",
       "Properties" : {

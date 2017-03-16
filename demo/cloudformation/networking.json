@@ -45,6 +45,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" } ]]}} ]
       }
     },
+
     "PubSubnet1" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
@@ -58,6 +59,7 @@
         "VpcId" : { "Ref" : "VPC" }
       }
     },
+
     "PubSubnet2" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
@@ -71,12 +73,14 @@
         "VpcId" : { "Ref" : "VPC" }
       }
     },
+
     "IGW" : {
       "Type" : "AWS::EC2::InternetGateway",
       "Properties" : {
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "igw" ]]}} ]
       }
     },
+
     "IGWAttachment" : {
       "Type" : "AWS::EC2::VPCGatewayAttachment",
       "Properties" : {
@@ -84,6 +88,7 @@
         "VpcId" : { "Ref" : "VPC" }
       }
     },
+
     "PubRouteTable1" : {
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
@@ -98,6 +103,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "pubrtb2" ]]}} ]
       }
     },
+
     "PubRtbAssoc1" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
@@ -105,6 +111,7 @@
         "SubnetId" : { "Ref" : "PubSubnet1" }
       }
     },
+
     "PubRtbAssoc2" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
@@ -112,6 +119,7 @@
         "SubnetId" : { "Ref" : "PubSubnet2" }
       }
     },
+
     "IGWRoutePub1" : {
       "Type" : "AWS::EC2::Route",
       "Properties" : {
@@ -120,6 +128,7 @@
         "RouteTableId" : { "Ref" : "PubRouteTable1" }
       }
     },
+
     "IGWRoutePub2" : {
       "Type" : "AWS::EC2::Route",
       "Properties" : {
@@ -128,6 +137,7 @@
         "RouteTableId" : { "Ref" : "PubRouteTable2" }
       }
     },
+
     "PrivSubnet1" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
@@ -140,6 +150,7 @@
         "VpcId" : { "Ref" : "VPC" }
       }
     },
+
     "PrivSubnet2" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
@@ -152,6 +163,7 @@
         "VpcId" : { "Ref" : "VPC" }
       }
     },
+
     "NATGatewayEIP" : {
       "Type" : "AWS::EC2::EIP",
       "Properties" : {
@@ -166,6 +178,7 @@
         "SubnetId" : { "Ref" : "PubSubnet1" }
       }
     },
+
     "PrivRouteTable1" : {
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
@@ -173,6 +186,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "privrtb1" ]]}} ]
       }
     },
+
     "PrivRouteTable2" : {
       "Type" : "AWS::EC2::RouteTable",
       "Properties" : {
@@ -180,6 +194,7 @@
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "privrtb2" ]]}} ]
       }
     },
+
     "PrivRtbAssoc1" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
@@ -187,6 +202,7 @@
         "SubnetId" : { "Ref" : "PrivSubnet1" }
       }
     },
+
     "PrivRtbAssoc2" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
@@ -194,6 +210,7 @@
         "SubnetId" : { "Ref" : "PrivSubnet2" }
       }
     },
+
     "NATRoutePriv1" : {
       "Type" : "AWS::EC2::Route",
       "Properties" : {
@@ -202,6 +219,7 @@
         "RouteTableId" : { "Ref" : "PrivRouteTable1" }
       }
     },
+
     "NATRoutePriv2" : {
       "Type" : "AWS::EC2::Route",
       "Properties" : {
@@ -218,21 +236,25 @@
       "Value" : { "Ref" : "VPC" },
       "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID"}}
     },
+
     "PubSubnet1" : {
       "Description" : "Public Subnet 1",
       "Value" : { "Ref" : "PubSubnet1" },
       "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PubSubnet1"}}
     },
+
     "PubSubnet2" : {
       "Description" : "Public Subnet 2",
       "Value" : { "Ref" : "PubSubnet2" },
       "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PubSubnet2"}}
     },
+
     "PrivSubnet1" : {
       "Description" : "Private Subnet 1",
       "Value" : { "Ref" : "PrivSubnet1" },
       "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-PrivSubnet1"}}
     },
+    
     "PrivSubnet2" : {
       "Description" : "Private Subnet 2",
       "Value" : { "Ref" : "PrivSubnet2" },
