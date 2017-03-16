@@ -12,11 +12,19 @@
     "ParameterValue": "Dev-networking"
   },
   {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "development"
+  },
+  {
     "ParameterKey": "WebServerCount",
     "ParameterValue": "2"
   },
   {
     "ParameterKey": "WebServerInstanceType",
     "ParameterValue": "t2.micro"
+  },
+  {
+    "ParameterKey": "WebServerAMI",
+    "ParameterValue": "ami-24934132"
   }
 ]
