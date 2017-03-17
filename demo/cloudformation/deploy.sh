@@ -20,5 +20,5 @@ stackName="${upperTarget}-$stack"
 
 aws cloudformation create-stack \
  --stack-name $stackName \
- --template-body file://$stack.json \
+ --template-body file://templates/$stack.json \
  --parameters file://parameters/$target/$target-$stack.json $capabilities

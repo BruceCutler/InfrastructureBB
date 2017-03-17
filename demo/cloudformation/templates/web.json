@@ -165,7 +165,7 @@
     },
 
     "LaunchConfig" : {
-      "Type" : "AWS::Autoscaling::LaunchConfiguration",
+      "Type" : "AWS::AutoScaling::LaunchConfiguration",
       "Properties" : {
         "AssociatePublicIpAddress" : "true",
         "ImageId" : { "Ref" : "WebServerAMI" },
@@ -177,14 +177,16 @@
     },
 
     "AutoscaleGroup" : {
-      "Type" : "AWS::Autoscaling::AutoScalingGroup",
+      "Type" : "AWS::AutoScaling::AutoScalingGroup",
       "Properties" : {
         "MaxSize" : "2",
         "MinSize" : "2",
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
         "LoadBalancerNames" : [{ "Ref" : "ELB" }],
-        "VPCZoneIdentifier" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} }],
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ASG" ]]}} ]
+        "VPCZoneIdentifier" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet2"} }],
+        "Tags" : [ { "Key" : "Name",
+         "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ASG" ]]}, 
+         "PropagateAtLaunch" : "true" } ]
       }
     }
 
