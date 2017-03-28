@@ -71,6 +71,7 @@ resource "aws_db_instance" "rds_instance" {
   multi_az                    = "false"
   db_subnet_group_name        = "${aws_db_subnet_group.rds.id}"
   auto_minor_version_upgrade  = "${var.allow_minor_upgrades}"
+  vpc_security_group_ids      = ["${aws_security_group.rds_security_group.id}"]
 }
 
 output "rds_sg_id" {

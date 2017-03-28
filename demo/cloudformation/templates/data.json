@@ -1,0 +1,103 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Data Stack",
+
+  "Metadata" : {
+  },
+
+  "Parameters" : {
+    "Target" : {
+      "Type" : "String"
+    },
+    "Stack" : {
+      "Type" : "String"
+    },
+    "NetworkingStackName" : {
+      "Type" : "String"
+    },
+    "DBSize" : {
+      "Type" : "String"
+    },
+    "DBEngine" : {
+      "Type" : "String"
+    },
+    "DBInstanceClass" : {
+      "Type" : "String"
+    },
+    "DBName" : {
+      "Type" : "String"
+    },
+    "DBUser" : {
+      "Type" : "String"
+    },
+    "DBPass" : {
+      "Type" : "String"
+    },
+    "DBStorageType" : {
+      "Type" : "String"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Conditions" : {
+  },
+
+  "Resources" : {
+    "DBSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+        "DBSubnetGroupDescription" : "Subnet group used for RDS",
+        "SubnetIds" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet2"} }],
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSubnetGroup" ]]}} ]
+      }
+    },
+
+    "DBSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "VPC Security group used for RDS",
+        "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSG" ]]}} ]
+      }
+    },
+    
+    "RDSInstance" : {
+      "Type" : "AWS::RDS::DBInstance",
+      "Properties" : {
+        "DBInstanceIdentifier" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]},
+        "AllocatedStorage" : { "Ref" : "DBSize" },
+        "Engine" : { "Ref" : "DBEngine" },
+        "DBInstanceClass" : { "Ref" : "DBInstanceClass" },
+        "DBName" : { "Ref" : "DBName" },
+        "MasterUsername" : { "Ref" : "DBUser" },
+        "MasterUserPassword" : { "Ref" : "DBPass" },
+        "MultiAZ" : "false",
+        "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" },
+        "AutoMinorVersionUpgrade" : "true",
+        "VPCSecurityGroups" : [ { "Ref" : "DBSecurityGroup" } ],
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]}} ]
+      }
+    }
+  },
+
+  "Outputs" : {
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+[
+  {
+    "ParameterKey": "Target",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "Stack",
+    "ParameterValue": "data"
+  },
+  {
+    "ParameterKey": "NetworkingStackName",
+    "ParameterValue": "Dev-networking"
+  },
+  {
+    "ParameterKey": "DBSize",
+    "ParameterValue": "10"
+  },
+  {
+    "ParameterKey": "DBEngine",
+    "ParameterValue": "mysql"
+  },
+  {
+    "ParameterKey": "DBInstanceClass",
+    "ParameterValue": "db.t2.micro"
+  },
+  {
+    "ParameterKey": "DBName",
+    "ParameterValue": "dev_db"
+  },
+  {
+    "ParameterKey": "DBUser",
+    "ParameterValue": "dev_db_user"
+  },
+  {
+    "ParameterKey": "DBPass",
+    "ParameterValue": "dev_db_pass"
+  },
+  {
+    "ParameterKey": "DBStorageType",
+    "ParameterValue": "gp2"
+  }
+]

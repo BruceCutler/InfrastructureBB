@@ -1,0 +1,30 @@
+[
+  {
+    "ParameterKey": "Target",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "Stack",
+    "ParameterValue": "web"
+  },
+  {
+    "ParameterKey": "NetworkingStackName",
+    "ParameterValue": "Dev-networking"
+  },
+  {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "development"
+  },
+  {
+    "ParameterKey": "WebServerCount",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "WebServerInstanceType",
+    "ParameterValue": "t2.micro"
+  },
+  {
+    "ParameterKey": "WebServerAMI",
+    "ParameterValue": "ami-24934132"
+  }
+]
