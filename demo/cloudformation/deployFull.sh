@@ -3,7 +3,7 @@
 # Shellscript to deploy all stacks consecutively
 
 if [[ $# -ne 1 ]]; then
-  echo "You need to supply arguments for target and stack"
+  echo "You need to supply an argument for target"
   exit 1
 fi
 
