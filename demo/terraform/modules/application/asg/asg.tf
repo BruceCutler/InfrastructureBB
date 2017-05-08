@@ -6,7 +6,9 @@ variable "stack" {}
 
 variable "sub_stack" {}
 
-variable "vpc_zone_identifier" {}
+variable "vpc_zone_identifier" {
+  type = "list"
+}
 
 variable "security_groups" {}
 

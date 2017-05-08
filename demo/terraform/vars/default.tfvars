@@ -1,1 +1,1 @@
-azs = "us-east-1a,us-east-1d"
+azs = [ "us-east-1a" , "us-east-1d" ]

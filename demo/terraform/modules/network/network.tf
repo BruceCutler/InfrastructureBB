@@ -6,11 +6,17 @@ variable "stack" {}
 
 variable "cidr_block" {}
 
-variable "pub_sub_cidr" {}
+variable "pub_sub_cidr" {
+  type = "list"
+}
 
-variable "priv_sub_cidr" {}
+variable "priv_sub_cidr" {
+  type = "list"
+}
 
-variable "azs" {}
+variable "azs" {
+  type = "list"
+}
 
 provider "aws" {
   region = "${var.region}"
