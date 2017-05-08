@@ -4,25 +4,31 @@ variable "target" {}
 
 variable "stack" {}
 
-variable "priv_sub_cidr" {}
+variable "priv_sub_cidr" {
+  type = "list"
+}
 
 variable "vpc_id" {}
 
 variable "igw_id" {}
 
-variable "pub_subnet_ids" {}
+variable "pub_subnet_ids" {
+  type = "list"
+}
 
-variable "azs" {}
+variable "azs" {
+  type = "list"
+}
 
 provider "aws" {
   region = "${var.region}"
 }
 
 resource "aws_subnet" "private" {
-  count             = "${length(split(",", var.priv_sub_cidr))}"
+  count             = "${length(var.priv_sub_cidr)}"
   vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${element(split(",", var.priv_sub_cidr), count.index)}"
-  availability_zone = "${element(split(",", var.azs), count.index)}"
+  cidr_block        = "${element(var.priv_sub_cidr, count.index)}"
+  availability_zone = "${element(var.azs, count.index)}"
 
   tags {
     Name        = "${var.target}-${var.stack}-priv-${count.index}"
@@ -39,11 +45,11 @@ resource "aws_eip" "nat_eip" {
 resource "aws_nat_gateway" "gw" {
   allocation_id = "${aws_eip.nat_eip.id}"
 
-  subnet_id = "${element(split(",", var.pub_subnet_ids), 0)}"
+  subnet_id = "${element(var.pub_subnet_ids, 0)}"
 }
 
 resource "aws_route_table" "private" {
-  count          = "${length(split(",", var.priv_sub_cidr))}"
+  count          = "${length(var.priv_sub_cidr)}"
   vpc_id         = "${var.vpc_id}"
 
   tags {
@@ -55,20 +61,20 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "priv" {
-  count          = "${length(split(",", var.priv_sub_cidr))}"
+  count          = "${length(var.priv_sub_cidr)}"
   subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
 
 resource "aws_route" "nat_route" {
-  count                   = "${length(split(",", var.priv_sub_cidr))}"
+  count                   = "${length(var.priv_sub_cidr)}"
   route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = "${aws_nat_gateway.gw.id}"
 }
 
 output "priv_subnet_id" {
-  value = "${join(",", aws_subnet.private.*.id)}"
+  value = ["${aws_subnet.private.*.id}"]
 }
 
 output "nat_gatway_id" {
@@ -84,7 +90,7 @@ output "nat_gateway_cidr" {
 }
 
 output "route_table_id" {
-  value = "${join(",", aws_route_table.private.*.id)}"
+  value = ["${aws_route_table.private.*.id}"]
 }
 
 

@@ -55,7 +55,7 @@ module "rds" {
   password             = "${var.db_password}"
   storage_type         = "${var.db_storage_type}"
   allow_minor_upgrades = "${var.allow_rds_minor_upgrades}"
-  priv_subnet_ids      = "${data.terraform_remote_state.networking.priv_subnet_id}"
+  priv_subnet_ids      = ["${data.terraform_remote_state.networking.priv_subnet_id}"]
   vpc_id               = "${data.terraform_remote_state.networking.vpc_id}"
 }
 

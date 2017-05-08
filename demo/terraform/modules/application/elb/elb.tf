@@ -8,7 +8,9 @@ variable "sub_stack" {}
 
 variable "vpc_id" {}
 
-variable "elb_subnets" {}
+variable "elb_subnets" {
+  type = "list"
+}
 
 provider "aws" {
   region = "${var.region}"
@@ -38,12 +40,12 @@ resource "aws_security_group" "elb_security_group" {
 }
 
 resource "aws_elb" "web_elb" {
-  name = "${var.target}-${var.stack}${var.sub_stack}-web-elb"
+  name                      = "${var.target}-${var.stack}${var.sub_stack}-web-elb"
   cross_zone_load_balancing = "true"
-  internal = "false"
-  subnets = ["${split(",",var.elb_subnets)}"]
-  security_groups = ["${aws_security_group.elb_security_group.id}"]
-  connection_draining = "true"
+  internal                  = "false"
+  subnets                   = ["${var.elb_subnets}"]
+  security_groups           = ["${aws_security_group.elb_security_group.id}"]
+  connection_draining       = "true"
 
   listener {
     lb_port           = 80

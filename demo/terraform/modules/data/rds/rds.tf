@@ -24,7 +24,9 @@ variable "storage_type" {}
 
 variable "allow_minor_upgrades" {}
 
-variable "priv_subnet_ids" {}
+variable "priv_subnet_ids" {
+  type = "list"
+}
 
 variable "vpc_id" {}
 
@@ -35,7 +37,7 @@ provider "aws" {
 resource "aws_db_subnet_group" "rds" {
   name        = "${var.target}-${var.stack}${var.sub_stack}-subnet-group"
   description = "RDS subnet group for ${var.target}-${var.stack}${var.sub_stack}"
-  subnet_ids  = ["${split(",", var.priv_subnet_ids)}"]
+  subnet_ids  = ["${var.priv_subnet_ids}"]
 
   tags {
     Name        = "${var.target}-${var.stack}${var.sub_stack}-subnet-group"

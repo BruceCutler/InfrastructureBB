@@ -2,7 +2,9 @@ variable "geo" {}
 
 variable "region" {}
 
-variable "azs" {}
+variable "azs" {
+  type = "list"
+}
 
 variable "bucket" {}
 
