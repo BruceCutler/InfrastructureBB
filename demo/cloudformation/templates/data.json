@@ -51,7 +51,7 @@
       "Properties" : {
         "DBSubnetGroupDescription" : "Subnet group used for RDS",
         "SubnetIds" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PrivSubnet2"} }],
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSubnetGroup" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSubnetGroup", "cloudformation" ]]}} ]
       }
     },
 
@@ -60,14 +60,14 @@
       "Properties" : {
         "GroupDescription" : "VPC Security group used for RDS",
         "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSSG" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "rdssg", "cloudformation" ]]}} ]
       }
     },
     
     "RDSInstance" : {
       "Type" : "AWS::RDS::DBInstance",
       "Properties" : {
-        "DBInstanceIdentifier" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]},
+        "DBInstanceIdentifier" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance", "cloudformation" ]]},
         "AllocatedStorage" : { "Ref" : "DBSize" },
         "Engine" : { "Ref" : "DBEngine" },
         "DBInstanceClass" : { "Ref" : "DBInstanceClass" },
@@ -78,7 +78,7 @@
         "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" },
         "AutoMinorVersionUpgrade" : "true",
         "VPCSecurityGroups" : [ { "Ref" : "DBSecurityGroup" } ],
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "RDSInstance", "cloudformation" ]]}} ]
       }
     }
   },

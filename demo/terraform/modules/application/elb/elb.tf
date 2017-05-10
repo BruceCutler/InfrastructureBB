@@ -17,7 +17,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "elb_security_group" {
-  name = "${var.target}-${var.stack}${var.sub_stack}-elb-sg"
+  name = "${var.target}-${var.stack}${var.sub_stack}-elb-sg-terraform"
   vpc_id = "${var.vpc_id}"
 
   ingress = {
@@ -35,12 +35,12 @@ resource "aws_security_group" "elb_security_group" {
   }
 
   tags {
-    Name = "${var.target}-${var.stack}${var.sub_stack}-sg"
+    Name = "${var.target}-${var.stack}${var.sub_stack}-sg-terraform"
   }
 }
 
 resource "aws_elb" "web_elb" {
-  name                      = "${var.target}-${var.stack}${var.sub_stack}-web-elb"
+  name                      = "${var.target}-${var.stack}${var.sub_stack}-web-elb-terraform"
   cross_zone_load_balancing = "true"
   internal                  = "false"
   subnets                   = ["${var.elb_subnets}"]
@@ -55,7 +55,7 @@ resource "aws_elb" "web_elb" {
   }
 
   tags {
-    Name        = "${var.target}-${var.stack}${var.sub_stack}-elb"
+    Name        = "${var.target}-${var.stack}${var.sub_stack}-elb-terraform"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
