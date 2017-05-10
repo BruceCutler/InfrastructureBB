@@ -28,7 +28,7 @@ provider "aws" {
 
 # Launch Config for Web Servers
 resource "aws_launch_configuration" "web_server" {
-  name                          = "${var.target}-${var.stack}${var.sub_stack}-web-lc"
+  name                          = "${var.target}-${var.stack}${var.sub_stack}-web-lc-terraform"
   image_id                      = "${var.web_server_ami}"
   instance_type                 = "${var.web_server_instance_type}"
   iam_instance_profile          = "${var.iam_instance_profile}"
@@ -39,7 +39,7 @@ resource "aws_launch_configuration" "web_server" {
 
 # ASG for Web Servers
 resource "aws_autoscaling_group" "web_servers" {
-  name                  = "${var.target}-${var.stack}${var.sub_stack}-web-asg"
+  name                  = "${var.target}-${var.stack}${var.sub_stack}-web-asg-terraform"
   max_size              = 2
   min_size              = 2
   launch_configuration  = "${aws_launch_configuration.web_server.id}"
@@ -47,7 +47,7 @@ resource "aws_autoscaling_group" "web_servers" {
 
   tag {
     key                 = "Name"
-    value               = "${var.target}-${var.stack}${var.sub_stack}-web"
+    value               = "${var.target}-${var.stack}${var.sub_stack}-web-terraform"
     propagate_at_launch = true
   }
 }

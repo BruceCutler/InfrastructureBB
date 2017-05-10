@@ -31,7 +31,7 @@ resource "aws_subnet" "private" {
   availability_zone = "${element(var.azs, count.index)}"
 
   tags {
-    Name        = "${var.target}-${var.stack}-priv-${count.index}"
+    Name        = "${var.target}-${var.stack}-priv-${count.index}-terraform"
     Stack       = "${var.stack}"
     Target      = "${var.target}"
   }
@@ -53,7 +53,7 @@ resource "aws_route_table" "private" {
   vpc_id         = "${var.vpc_id}"
 
   tags {
-    Name         = "${var.target}-${var.stack}-priv-rtb-${count.index}"
+    Name         = "${var.target}-${var.stack}-priv-rtb-${count.index}-terraform"
     Environment  = "${var.target}-${var.stack}"
     Target       = "${var.target}"
     Stack        = "${var.stack}"

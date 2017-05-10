@@ -40,7 +40,7 @@
     "IAMRole" : {
       "Type" : "AWS::IAM::Role",
       "Properties" : {
-        "RoleName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webrole" ]]},
+        "RoleName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webrole", "cloudformation" ]]},
         "AssumeRolePolicyDocument" : {
           "Version" : "2012-10-17",
           "Statement" : [
@@ -60,7 +60,7 @@
     "IAMPolicy" : {
       "Type" : "AWS::IAM::Policy",
       "Properties" : {
-        "PolicyName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webpolicy" ]]},
+        "PolicyName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "webpolicy", "cloudformation" ]]},
         "Roles" : [{ "Ref" : "IAMRole" }],
         "PolicyDocument" : {
           "Version" : "2012-10-17",
@@ -117,7 +117,7 @@
           }
         ],
         "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "WebSG" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "websg", "cloudformation" ]]}} ]
       }
     },
 
@@ -142,14 +142,14 @@
           }
         ],
         "VpcId" : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-VPCID"} },
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ELBSG" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "elbsg", "cloudformation" ]]}} ]
       }
     },
 
     "ELB" : {
       "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties" : {
-        "LoadBalancerName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ELB" ]]},
+        "LoadBalancerName" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "elb", "cloudformation" ]]},
         "CrossZone" : "true",
         "Subnets" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet2"} }],
         "SecurityGroups" : [{ "Ref" : "ELBSG" }],
@@ -160,7 +160,7 @@
             "LoadBalancerPort" : "80",
             "Protocol" : "http"
           }],
-        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ELB" ]]}} ]
+        "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "elb", "cloudformation" ]]}} ]
       }
     },
 
@@ -185,7 +185,7 @@
         "LoadBalancerNames" : [{ "Ref" : "ELB" }],
         "VPCZoneIdentifier" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet2"} }],
         "Tags" : [ { "Key" : "Name",
-         "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "ASG" ]]}, 
+         "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "web", "cloudformation" ]]}, 
          "PropagateAtLaunch" : "true" } ]
       }
     }

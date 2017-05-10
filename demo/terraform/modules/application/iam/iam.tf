@@ -10,7 +10,7 @@ provider "aws" {
 
 # IAM Role for EC2 instances
 resource "aws_iam_role" "ec2_role" {
-  name = "${var.target}${var.sub_stack}_ec2_role"
+  name = "${var.target}${var.sub_stack}_ec2_role_terraform"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -30,7 +30,7 @@ EOF
 
 # IAM Role Policy
 resource "aws_iam_role_policy" "ec2_role_policy" {
-    name = "ec2_role_policy${var.sub_stack}"
+    name = "ec2_role_policy${var.sub_stack}_terraform"
     role = "${aws_iam_role.ec2_role.id}"
     policy = <<EOF
 {
