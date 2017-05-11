@@ -17,6 +17,8 @@ networkingStackName="${upperTarget}-networking"
 dataStackName="${upperTarget}-data"
 webStackName="${upperTarget}-web"
 
+echo "Creating Networking Stack..."
+echo
 # Create Networking stack
 aws cloudformation create-stack \
  --stack-name $networkingStackName \
@@ -32,6 +34,7 @@ echo
 echo "Networking stack complete!!!"
 echo
 
+echo "Creating Data Stack..."
 # Create Data Stack
 aws cloudformation create-stack \
  --stack-name $dataStackName \
@@ -47,6 +50,7 @@ echo
 echo "Data stack complete!!!"
 echo
 
+echo "Creating Web Stack..."
 # Create Web Stack
 aws cloudformation create-stack \
  --stack-name $webStackName \
