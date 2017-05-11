@@ -1,9 +1,8 @@
 #!/bin/bash
-# Example: ./deploy.sh us dev slalom1
+# Example: ./deploy.sh us dev
 
 geo=$1
 target=$2
-sub_stack=$3
 
 echo "Creating the networking stack..."
 echo
