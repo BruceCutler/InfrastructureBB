@@ -40,7 +40,7 @@ resource "aws_security_group" "elb_security_group" {
 }
 
 resource "aws_elb" "web_elb" {
-  name                      = "${var.target}-${var.stack}${var.sub_stack}-web-elb-terraform"
+  name                      = "${var.target}-${var.stack}${var.sub_stack}"
   cross_zone_load_balancing = "true"
   internal                  = "false"
   subnets                   = ["${var.elb_subnets}"]

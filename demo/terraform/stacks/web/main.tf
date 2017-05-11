@@ -26,8 +26,8 @@ provider "aws" {
   region = "${var.region}"
 }
 
-module "application" {
-  source = "../../modules/application"
+module "web" {
+  source = "../../modules/web"
   geo                      = "${var.geo}"
   bucket                   = "${var.bucket}"
   region                   = "${var.region}"

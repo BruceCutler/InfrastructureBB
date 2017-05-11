@@ -18,6 +18,6 @@ echo
 
 sleep 5
 
-echo "Creating the application stack"
+echo "Creating the web stack"
 echo
-./tf_deploy -g $geo -t $target -s application -n $sub_stack -a apply
+./tf_deploy -g $geo -t $target -s web -n $sub_stack -a apply
