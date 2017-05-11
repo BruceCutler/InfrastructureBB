@@ -16,7 +16,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = "true"
 
   tags {
-    Name   = "vpc-${var.target}-${var.stack}-terraform"
+    Name   = "${var.target}-${var.stack}-terraform"
     Target = "${var.target}"
   }
 }

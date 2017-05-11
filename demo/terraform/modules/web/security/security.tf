@@ -14,7 +14,7 @@ provider "aws" {
 
 # Security Groups For EC2 instances
 resource "aws_security_group" "ec2_instances" {
-  name = "${var.target}-${var.stack}${var.sub_stack}-sg-terraform"
+  name = "${var.target}-${var.stack}${var.sub_stack}-websg-terraform"
   vpc_id = "${var.vpc_id}"
 
   ingress = {
@@ -46,7 +46,7 @@ resource "aws_security_group" "ec2_instances" {
   }
 
   tags {
-    Name = "${var.target}-${var.stack}${var.sub_stack}-sg-terraform"
+    Name = "${var.target}-${var.stack}${var.sub_stack}-websg-terraform"
   }
 }
 

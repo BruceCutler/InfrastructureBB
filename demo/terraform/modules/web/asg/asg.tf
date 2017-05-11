@@ -47,7 +47,7 @@ resource "aws_autoscaling_group" "web_servers" {
 
   tag {
     key                 = "Name"
-    value               = "${var.target}-${var.stack}${var.sub_stack}-web-terraform"
+    value               = "${var.target}-${var.stack}${var.sub_stack}-terraform"
     propagate_at_launch = true
   }
 }

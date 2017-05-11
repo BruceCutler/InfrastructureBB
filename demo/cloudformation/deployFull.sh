@@ -26,6 +26,8 @@ aws cloudformation create-stack \
 # Wait for Networking stack creation
 aws cloudformation wait stack-create-complete --stack-name $networkingStackName
 
+aws cloudformation describe-stack-events --stack-name $networkingStackName
+
 echo
 echo "Networking stack complete!!!"
 echo
@@ -38,6 +40,8 @@ aws cloudformation create-stack \
 
  # Wait for Data stack creation
 aws cloudformation wait stack-create-complete --stack-name $dataStackName
+
+aws cloudformation describe-stack-events --stack-name $dataStackName
 
 echo
 echo "Data stack complete!!!"
@@ -52,6 +56,8 @@ aws cloudformation create-stack \
 
  # Wait for Web stack creation
 aws cloudformation wait stack-create-complete --stack-name $webStackName
+
+aws cloudformation describe-stack-events --stack-name $webStackName
 
 echo
 echo "Web stack complete!!!"

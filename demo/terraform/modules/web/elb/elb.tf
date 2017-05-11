@@ -35,7 +35,7 @@ resource "aws_security_group" "elb_security_group" {
   }
 
   tags {
-    Name = "${var.target}-${var.stack}${var.sub_stack}-sg-terraform"
+    Name = "${var.target}-${var.stack}${var.sub_stack}-elbsg-terraform"
   }
 }
 

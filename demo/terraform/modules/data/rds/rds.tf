@@ -49,12 +49,12 @@ resource "aws_db_subnet_group" "rds" {
 }
 
 resource "aws_security_group" "rds_security_group" {
-  name        = "${var.target}-${var.stack}${var.sub_stack}-rds-sg-terraform"
+  name        = "${var.target}-${var.stack}${var.sub_stack}-rdssg-terraform"
   description = "SG for RDS access"
   vpc_id      = "${var.vpc_id}"
 
   tags {
-    Name        = "${var.target}-${var.stack}${var.sub_stack}-rds-sg-terraform"
+    Name        = "${var.target}-${var.stack}${var.sub_stack}-rdssg-terraform"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
@@ -63,7 +63,7 @@ resource "aws_security_group" "rds_security_group" {
 }
 
 resource "aws_db_instance" "rds_instance" {
-  identifier                  = "${var.target}-${var.stack}${var.sub_stack}-rds-terraform"
+  identifier                  = "${var.target}-${var.stack}${var.sub_stack}-rdsinstance-terraform"
   allocated_storage           = "${var.allocated_storage}"
   engine                      = "${var.engine}"
   instance_class              = "${var.instance_class}"

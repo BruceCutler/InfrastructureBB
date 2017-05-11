@@ -14,10 +14,10 @@ sleep 5
 
 echo "Creating the data stack..."
 echo
-./tf_deploy -g $geo -t $target -s data -n $sub_stack -a apply
+./tf_deploy -g $geo -t $target -s data -a apply
 
 sleep 5
 
 echo "Creating the web stack"
 echo
-./tf_deploy -g $geo -t $target -s web -n $sub_stack -a apply
+./tf_deploy -g $geo -t $target -s web -a apply

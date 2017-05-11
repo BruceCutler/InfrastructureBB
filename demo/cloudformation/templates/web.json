@@ -185,7 +185,7 @@
         "LoadBalancerNames" : [{ "Ref" : "ELB" }],
         "VPCZoneIdentifier" : [{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet1"} },{ "Fn::ImportValue" : {"Fn::Sub": "${NetworkingStackName}-PubSubnet2"} }],
         "Tags" : [ { "Key" : "Name",
-         "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "web", "cloudformation" ]]}, 
+         "Value" : { "Fn::Join" : [ "-", [ { "Ref" : "Target" }, { "Ref" : "Stack" }, "cloudformation" ]]}, 
          "PropagateAtLaunch" : "true" } ]
       }
     }

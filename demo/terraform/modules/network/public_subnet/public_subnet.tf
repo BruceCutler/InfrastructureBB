@@ -26,7 +26,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags {
-    Name        = "${var.target}-${var.stack}-pub-${count.index}-terraform"
+    Name        = "${var.target}-${var.stack}-pub${count.index}-terraform"
     Stack       = "${var.stack}"
     Target      = "${var.target}"
   }
@@ -47,7 +47,7 @@ resource "aws_route_table" "public" {
   vpc_id         = "${var.vpc_id}"
 
   tags {
-    Name        = "${var.target}-${var.stack}-pub-rtb-${count.index}-terraform"
+    Name        = "${var.target}-${var.stack}-pubrtb${count.index}-terraform"
     Environment = "${var.target}-${var.stack}"
     Target      = "${var.target}"
     Stack       = "${var.stack}"
